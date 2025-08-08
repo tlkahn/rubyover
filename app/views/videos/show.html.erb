@@ -1,0 +1,120 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Interactive Ruby Overlay</title>
+</head>
+<body>
+  <div id="wrap">
+    <div id="videoBox">
+      <video id="video" controls crossorigin="anonymous">
+        <source src="/videos/video.mp4" type="video/mp4">
+        <track id="vtt" src="/subs/1.vtt" kind="subtitles" srclang="ja" label="日本語">
+      </video>
+      <div id="subs" aria-live="polite"></div>
+    </div>
+
+    <div id="lexicon" aria-label="Current subtitle tokens">
+      <table id="wakachi">
+        <thead>
+          <tr><th>Word</th></tr>
+        </thead>
+        <tbody>
+          <tr><td class="muted">Play or seek the video to populate words from the current subtitle.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <script>
+    const video  = document.getElementById('video');
+    const subs   = document.getElementById('subs');
+    const wakachiTable = document.getElementById('wakachi');
+    const wakachiBody  = wakachiTable.querySelector('tbody');
+
+    const findWordKey = (el) =>
+      (el.classList && Array.from(el.classList).find(c => c.startsWith('w_'))) || null;
+
+    // get visible text of an element but ignore <rt> (furigana)
+    const visibleText = (el) => {
+      const clone = el.cloneNode(true);
+      clone.querySelectorAll('rt').forEach(rt => rt.remove());
+      return clone.textContent.trim();
+    };
+
+    function bindTrack(track) {
+      track.mode = 'hidden';
+
+      const render = () => {
+        const cues = Array.from(track.activeCues || []);
+        subs.innerHTML = '';
+        for (const cue of cues) {
+          if (cue.getCueAsHTML) {
+            subs.appendChild(cue.getCueAsHTML());
+          } else {
+            const div = document.createElement('div');
+            div.textContent = cue.text;
+            subs.appendChild(div);
+          }
+        }
+        buildWakachiFromSubs();
+      };
+
+      track.addEventListener('cuechange', render);
+      render(); // initial
+    }
+
+    function buildWakachiFromSubs() {
+      const spans = subs.querySelectorAll('span');
+      const seen = new Set();
+      const words = [];
+
+      spans.forEach(span => {
+        const key = findWordKey(span);
+        if (!key || seen.has(key)) return; // unique by key per cue
+        seen.add(key);
+        const word = visibleText(span) || span.textContent.trim();
+        words.push(word);
+      });
+
+      wakachiBody.innerHTML = '';
+      if (words.length === 0) {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `<td class="muted">No tokens detected in this cue.</td>`;
+        wakachiBody.appendChild(tr);
+        return;
+      }
+
+      for (const word of words) {
+        const tr = document.createElement('tr');
+        const td = document.createElement('td');
+        td.className = 'word';
+        td.textContent = word;
+        tr.appendChild(td);
+        wakachiBody.appendChild(tr);
+      }
+    }
+
+    // bind track once metadata is available
+    video.addEventListener('loadedmetadata', () => {
+      const track = Array.from(video.textTracks).find(t => t.kind === 'subtitles');
+      if (track) bindTrack(track);
+    });
+
+    // click anywhere on the video area (except near native controls) toggles play/pause
+    video.addEventListener('click', (e) => {
+      const rect = video.getBoundingClientRect();
+      const y = e.clientY - rect.top;
+      if (y < rect.height - 48) { // reserve bottom strip for native controls
+        if (video.paused) video.play(); else video.pause();
+      }
+    });
+
+    // keep overlay in sync; cuechange drives content
+    if ('requestVideoFrameCallback' in HTMLVideoElement.prototype) {
+      const step = () => { video.requestVideoFrameCallback(step); };
+      video.addEventListener('play',  () => video.requestVideoFrameCallback(step));
+    }
+  </script>
+</body>
+</html>

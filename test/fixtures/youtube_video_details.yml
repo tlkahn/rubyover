@@ -1,0 +1,15 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  medium: one
+  external_id: MyString
+  channel_title: MyString
+  channel_id: MyString
+  published_at: 2025-08-08 12:07:58
+
+two:
+  medium: two
+  external_id: MyString
+  channel_title: MyString
+  channel_id: MyString
+  published_at: 2025-08-08 12:07:58

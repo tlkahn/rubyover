@@ -1,0 +1,19 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  type: 
+  title: MyString
+  primary_language: MyString
+  description: MyText
+  year: 1
+  duration_ms: 1
+  media_category: one
+
+two:
+  type: 
+  title: MyString
+  primary_language: MyString
+  description: MyText
+  year: 1
+  duration_ms: 1
+  media_category: two

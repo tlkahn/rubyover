@@ -1,0 +1,191 @@
+ * This is a manifest file that'll be compiled into application.css.
+ *
+ * With Propshaft, assets are served efficiently without preprocessing steps. You can still include
+ * application-wide styles in this file, but keep in mind that CSS precedence will follow the standard
+ * cascading order, meaning styles declared later in the document or manifest will override earlier ones,
+ * depending on specificity.
+ *
+ * Consider organizing styles into separate files for maintainability.
+ */
+
+body {
+  margin: 0 auto;
+  padding: 5rem;
+  background: #f5f5f5;
+}
+
+#wrap { position: relative; max-width: 960px; margin: 2rem auto; }
+video { width: 100%; height: auto; display: block; }
+#subs {
+  position: absolute; inset: 0;
+  display: flex; align-items: flex-end; justify-content: center;
+  padding: 2.5%; pointer-events: none; /* changed to none */
+  font-size: 2.8vh; line-height: 1.3; text-shadow: 0 0 4px #000;
+  color: #fff; text-align: center;
+}
+#bubble {
+  position: absolute; min-width: 12rem; max-width: 24rem;
+  background: rgba(0,0,0,.85); color: #fff; padding: .6rem .8rem;
+  border-radius: .5rem; font-size: .95rem; line-height: 1.2;
+  display: none; pointer-events: none;
+}
+#subs ruby { ruby-position: over; }
+#subs rt   { font-size: 60%; }
+/* make clickable elements interactive */
+#subs .w_tokyo, #subs .w_train, #subs .w_noru, #subs .w_gakkou, #subs .w_iku {
+  cursor: pointer; border-bottom: 1px dashed rgba(255,255,255,.4);
+  pointer-events: auto; /* enable clicks only on these elements */
+}
+/* layout: video left, narrow word list right */
+#wrap {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+}
+#videoBox {
+  position: relative;
+  flex: 1 1 auto; /* takes remaining space after the 10vw sidebar */
+  min-width: 0;   /* allow flex item to shrink properly */
+}
+#video {
+  width: 100%;
+  height: auto;
+  display: block;
+  background: #000;
+}
+
+/* subtitle overlay: non-selectable and non-interactive so clicks reach video */
+#subs {
+  position: absolute;
+  left: 0; right: 0;
+  bottom: 10%;
+  padding: .25rem .5rem;
+  user-select: none;
+  -webkit-user-select: none;
+  pointer-events: none;
+}
+/* belt-and-suspenders: nothing in the video box is text-selectable */
+#videoBox, #videoBox * {
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+/* narrow lexicon (≤10% of viewport width) */
+#lexicon {
+  flex: 0 0 10vw;   /* reserve exactly 10% of viewport width */
+  width: 10vw;
+  max-width: 10vw;  /* never exceed 10% */
+  overflow: hidden;
+}
+#wakachi {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+  font-size: 14px;
+}
+#wakachi th, #wakachi td {
+  border: 1px solid #ddd;
+  padding: .5rem;
+  vertical-align: top;
+}
+#wakachi th {
+  text-align: left;
+  background: #f6f6f6;
+  position: sticky;
+  top: 0;
+}
+#wakachi td.word {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+#wakachi .muted { color:#666; font-style: italic; }
+
+/* small screens: stack; make list full-width for readability */
+@media (max-width: 900px) {
+  #wrap { flex-direction: column; }
+  #lexicon {
+    flex: 0 0 auto;
+    width: 100%;
+    max-width: none;
+  }
+}
+
+    /* layout: video left, narrow word list right */
+    #wrap {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+    }
+    #videoBox {
+      position: relative;
+      flex: 1 1 auto; /* takes remaining space after the 10vw sidebar */
+      min-width: 0;   /* allow flex item to shrink properly */
+    }
+    #video {
+      width: 100%;
+      height: auto;
+      display: block;
+      background: #000;
+    }
+
+    /* subtitle overlay: non-selectable and non-interactive so clicks reach video */
+    #subs {
+      position: absolute;
+      left: 0; right: 0;
+      bottom: 10%;
+      padding: .25rem .5rem;
+      user-select: none;
+      -webkit-user-select: none;
+      pointer-events: none;
+    }
+    /* belt-and-suspenders: nothing in the video box is text-selectable */
+    #videoBox, #videoBox * {
+      user-select: none;
+      -webkit-user-select: none;
+    }
+
+    /* narrow lexicon (≤10% of viewport width) */
+    #lexicon {
+      flex: 0 0 10vw;   /* reserve exactly 10% of viewport width */
+      width: 10vw;
+      max-width: 10vw;  /* never exceed 10% */
+      overflow: hidden;
+    }
+    #wakachi {
+      width: 100%;
+      border-collapse: collapse;
+      table-layout: fixed;
+      font-size: 14px;
+    }
+    #wakachi th, #wakachi td {
+      border: 1px solid #ddd;
+      padding: .5rem;
+      vertical-align: top;
+    }
+    #wakachi th {
+      text-align: left;
+      background: #f6f6f6;
+      position: sticky;
+      top: 0;
+    }
+    #wakachi td.word {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    #wakachi .muted { color:#666; font-style: italic; }
+
+    /* small screens: stack; make list full-width for readability */
+    @media (max-width: 900px) {
+      #wrap { flex-direction: column; }
+      #lexicon {
+        flex: 0 0 auto;
+        width: 100%;
+        max-width: none;
+      }
+    }

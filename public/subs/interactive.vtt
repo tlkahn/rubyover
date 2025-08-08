@@ -1,0 +1,12 @@
+WEBVTT
+
+STYLE
+::cue(ruby) { font-size: 1em; }
+::cue(rt)   { font-size: 0.6em; }
+
+00:00:00.000 --> 00:04.000
+<c.w_tokyo><ruby>東京<rt>とうきょう</rt></ruby></c>で
+<c.w_train><ruby>電車<rt>でんしゃ</rt></ruby></c>に<c.w_noru><ruby>乗<rt>の</rt></ruby></c>る。
+
+00:00:04.000 --> 00:08.000
+<c.w_gakkou><ruby>学校<rt>がっこう</rt></ruby></c>へ<c.w_iku><ruby>行<rt>い</rt></ruby></c>きます。
