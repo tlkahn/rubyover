@@ -106,7 +106,7 @@ class Subtitle < ApplicationRecord
   end
 
   def slugify(text)
-    text.to_s.downcase.gsub(/[^\p{Alnum}]+/, "_").gsub(/^_+|_+$/, "")
+    text.to_s.parameterize(separator: "_")
   end
 
   def choose_label(word_info)
@@ -115,7 +115,7 @@ class Subtitle < ApplicationRecord
   end
 
   def build_ruby_html(token, word_info)
-    word_info["ruby_html"].presence ? "<ruby>#{token}<rt>#{word_info['reading_kana']}</rt></ruby>" : token
+    word_info["ruby_html"].presence ? word_info["ruby_html"] : token
   end
 
   def wrap_token(token, word_index)
